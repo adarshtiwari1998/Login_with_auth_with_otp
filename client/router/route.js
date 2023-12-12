@@ -8,28 +8,25 @@ import Auth, { localVariables } from '../middleware/auth.js';
 import { registerMail } from '../controllers/mailer.js';
 
 
-/** POST Methods */
-router.route('/register').post(controller.register); // register user
-router.route('/registerMail').post(registerMail); // send the email
-router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); // authenticate user
-router.route('/login').post(controller.verifyUser, controller.login); // login in app if the user already in database otherwise show error message to verify user
+const productionBaseURL = 'https://teal-crisp-c122c1.netlify.app/api';
 
+/** POST Methods */
+router.route(`${productionBaseURL}/register`).post(controller.register);
+router.route(`${productionBaseURL}/registerMail`).post(registerMail);
+router.route(`${productionBaseURL}/authenticate`).post(controller.verifyUser, (req, res) => res.end());
+router.route(`${productionBaseURL}/login`).post(controller.verifyUser, controller.login);
 
 /** GET Methods */
-router.route('/user/:username').get(controller.getUser) // user with username
-router.route('/generateOTP').get(controller.verifyUser, localVariables, controller.generateOTP) // generate random OTP
-router.route('/verifyOTP').get(controller.verifyUser ,controller.verifyOTP) // verify generated OTP
-router.route('/createResetSession').get(controller.createResetSession) // reset all the variables
+router.route(`${productionBaseURL}/user/:username`).get(controller.getUser);
+router.route(`${productionBaseURL}/generateOTP`).get(controller.verifyUser, localVariables, controller.generateOTP);
+router.route(`${productionBaseURL}/verifyOTP`).get(controller.verifyUser, controller.verifyOTP);
+router.route(`${productionBaseURL}/createResetSession`).get(controller.createResetSession);
 
-
-router.route('/sendOtpVerificationEmail').get(controller.sendOtpVerificationEmail); // generate OTP for registration verification
-router.route('/verifyOTPRegistrationEmail').get(controller.verifyOTPRegistrationEmail); // verify OTP for registration
-
+router.route(`${productionBaseURL}/sendOtpVerificationEmail`).get(controller.sendOtpVerificationEmail);
+router.route(`${productionBaseURL}/verifyOTPRegistrationEmail`).get(controller.verifyOTPRegistrationEmail);
 
 /** PUT Methods */
-router.route('/updateuser').put(Auth, controller.updateUser); // is use to update the user profile
-router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // use to reset password
-
-
+router.route(`${productionBaseURL}/updateuser`).put(Auth, controller.updateUser);
+router.route(`${productionBaseURL}/resetPassword`).put(controller.verifyUser, controller.resetPassword);
 
 export default router;
