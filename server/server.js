@@ -8,9 +8,19 @@ const app = express();
 
 /** middlewares */
 app.use(express.json());
-app.use(cors());
-app.use(morgan('tiny'));
-app.disable('x-powered-by'); // less hackers know about our stack
+
+// Updated CORS configuration for Netlify frontend
+app.use(cors({
+    origin: 'https://teal-crisp-c122c1.netlify.app', // Replace with your Netlify frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  }));
+
+  
+  app.use(morgan('tiny'));
+  app.disable('x-powered-by');
 
 
 const port = 8080;
@@ -26,18 +36,17 @@ app.use('/api', router);
 // app.use('/api', router)
 
 /** start server only when we have valid connection */
-
 connect().then(() => {
     try {
-        app.listen(port, () => {
-            console.log(`Server connected to http://localhost:${port}`);
-        })
+      app.listen(port, () => {
+        console.log(`Server connected to port ${port}`);
+      });
     } catch (error) {
-        console.log('Cannot connect to the server')
+      console.log('Cannot connect to the server');
     }
-}).catch(error => {
+  }).catch(error => {
     console.log("Invalid database connection...!");
-})
+  });
 
 
 // app.listen(port, () => {
