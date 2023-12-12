@@ -30,7 +30,7 @@ app.use('/api', router);
 connect().then(() => {
     try {
         app.listen(port, () => {
-            console.log(`Server connected to https://foxxbioprocess.myshopify.com:${port}`);
+            console.log(`Server connected to http://localhost:${port}`);
         })
     } catch (error) {
         console.log('Cannot connect to the server')
